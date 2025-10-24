@@ -10,20 +10,20 @@ body {
     font-family: 'Inter', sans-serif;
     margin: 0;
     padding: 0;
-    background: transparent; /* transparent background for overlay */
+    background: transparent; /* overlay */
     color: #f8fafc;
     height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: flex-end; /* anchor container at bottom */
+    align-items: flex-end; /* bottom-anchored container */
     overflow: hidden;
 }
 .container {
     width: 90%;
     max-width: 900px;
-    margin-bottom: 30px; /* spacing from bottom */
-    background: rgba(15,23,42,0.7); /* semi-transparent */
-    backdrop-filter: blur(10px); /* blur behind container */
+    margin-bottom: 30px;
+    background: rgba(15,23,42,0.7);
+    backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 20px 30px;
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
@@ -74,9 +74,9 @@ const githubOwner = "volleyleaguecupgr";
 const githubRepo = "referees";
 const branch = "main";
 
-// Extract team slug from URL path
-const pathParts = window.location.pathname.split('/').filter(p => p);
-const teamParam = pathParts[pathParts.length - 1]?.toLowerCase();
+// ✅ Use query parameter instead of path
+const urlParams = new URLSearchParams(window.location.search);
+const teamParam = urlParams.get('team')?.toLowerCase();
 
 async function fetchGameday() {
     const url = `https://raw.githubusercontent.com/${githubOwner}/${githubRepo}/${branch}/gameday.json`;
@@ -108,17 +108,16 @@ function renderGame(game) {
 async function init() {
     const container = document.getElementById('cardsContainer');
     if (!teamParam) {
-        container.innerHTML = '<div class="no-data">⚠️ Δεν δόθηκε ομάδα στο URL.<br><small>Χρησιμοποιήστε: /show/paok ή /show/olympiakos</small></div>';
+        container.innerHTML = '<div class="no-data">⚠️ Δεν δόθηκε ομάδα στο URL.<br>Χρησιμοποιήστε: show.html?team=paok</div>';
         return;
     }
     try {
         const data = await fetchGameday();
         const games = data.games || [];
-        const filtered = games.filter(g => {
-            const homeMatch = g.homeSlug && g.homeSlug.toLowerCase() === teamParam;
-            const awayMatch = g.awaySlug && g.awaySlug.toLowerCase() === teamParam;
-            return homeMatch || awayMatch;
-        });
+        const filtered = games.filter(g => 
+            (g.homeSlug || '').toLowerCase() === teamParam || 
+            (g.awaySlug || '').toLowerCase() === teamParam
+        );
 
         if (filtered.length === 0) {
             container.innerHTML = `<div class="no-data">⚠️ Δεν βρέθηκε κανένα παιχνίδι για την ομάδα: <strong>${teamParam}</strong></div>`;
