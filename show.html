@@ -3,78 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏐 Referees</title>
+<title>🏐 Referees Overlay</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 body {
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg,#0f172a,#1e293b);
-    color: #f8fafc;
-    padding: 40px 20px;
     margin: 0;
+    padding: 0;
+    background: transparent; /* transparent background for overlay */
+    color: #f8fafc;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* anchor container at bottom */
+    overflow: hidden;
 }
 .container {
-    max-width: 800px;
-    margin: 0 auto;
+    width: 90%;
+    max-width: 900px;
+    margin-bottom: 30px; /* spacing from bottom */
+    background: rgba(15,23,42,0.7); /* semi-transparent */
+    backdrop-filter: blur(10px); /* blur behind container */
+    border-radius: 20px;
+    padding: 20px 30px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
 }
-h1 { 
-    text-align:center; 
-    color:#3b82f6; 
-    margin-bottom:30px; 
-    font-size: 2rem;
+h1 {
+    text-align: center;
+    color: #60a5fa;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
 }
 .card {
     background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 30px;
-    margin-bottom: 20px;
+    backdrop-filter: blur(5px);
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
     border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
 }
 .vs-header {
-    font-size: 1.8rem; 
-    font-weight: 700; 
-    margin-bottom: 20px; 
-    color:#60a5fa;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 10px;
     text-align: center;
+    color: #3b82f6;
 }
-.ref-section {
-    margin-bottom: 15px;
-    line-height: 1.8;
-}
-.ref-label {
-    color: #94a3b8;
-    font-weight: 600;
-    display: inline-block;
-    min-width: 150px;
-}
-.ref-value {
-    color: #f8fafc;
-    font-weight: 500;
-}
-.no-data {
-    text-align: center;
-    padding: 40px;
-    color: #94a3b8;
-}
-.loading {
-    text-align: center;
-    padding: 40px;
-}
-.spinner {
-    border: 4px solid rgba(255,255,255,0.1);
-    border-top: 4px solid #3b82f6;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-    margin: 0 auto;
-}
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+.ref-section { margin-bottom: 8px; }
+.ref-label { color: #94a3b8; font-weight: 600; display: inline-block; min-width: 120px; }
+.ref-value { color: #f8fafc; font-weight: 500; }
+.no-data, .loading { text-align: center; padding: 20px; color: #94a3b8; }
+.spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #3b82f6; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
@@ -83,25 +63,23 @@ h1 {
 <div id="cardsContainer">
     <div class="loading">
         <div class="spinner"></div>
-        <p style="margin-top: 20px;">Φόρτωση δεδομένων...</p>
+        <p style="margin-top:10px;">Φόρτωση δεδομένων...</p>
     </div>
 </div>
 </div>
+
 <script>
+// GitHub info
 const githubOwner = "volleyleaguecupgr";
 const githubRepo = "referees";
 const branch = "main";
 
-// Get team from URL path (e.g., /show/paok)
+// Extract team slug from URL path
 const pathParts = window.location.pathname.split('/').filter(p => p);
-const teamParam = pathParts[pathParts.length - 1]?.toLowerCase(); // Gets "paok" from /show/paok
-
-console.log('Team parameter:', teamParam);
-console.log('Full path:', window.location.pathname);
+const teamParam = pathParts[pathParts.length - 1]?.toLowerCase();
 
 async function fetchGameday() {
     const url = `https://raw.githubusercontent.com/${githubOwner}/${githubRepo}/${branch}/gameday.json`;
-    console.log('Fetching from:', url);
     const res = await fetch(url);
     if (!res.ok) throw new Error("Could not fetch gameday.json");
     return await res.json();
@@ -109,82 +87,48 @@ async function fetchGameday() {
 
 function renderGame(game) {
     const div = document.createElement('div');
-    div.className='card';
-    
+    div.className = 'card';
     const referees = (game.refs.referees || []).join(', ') || 'Δεν έχει οριστεί';
     const observer = game.refs.observer || 'Δεν έχει οριστεί';
     const challengeRef = game.refs.challengeRef || 'Δεν έχει οριστεί';
     const linesmen = (game.refs.linesmen || []).join(', ') || 'Δεν έχει οριστεί';
     const secretariat = game.refs.secretariat || 'Δεν έχει οριστεί';
-    
-    div.innerHTML=`
+
+    div.innerHTML = `
         <div class="vs-header">${game.homeTeam} vs ${game.awayTeam}</div>
-        <div class="ref-section">
-            <span class="ref-label">Διαιτητές:</span>
-            <span class="ref-value">${referees}</span>
-        </div>
-        <div class="ref-section">
-            <span class="ref-label">Παρατηρητής:</span>
-            <span class="ref-value">${observer}</span>
-        </div>
-        <div class="ref-section">
-            <span class="ref-label">Challenge Referee:</span>
-            <span class="ref-value">${challengeRef}</span>
-        </div>
-        <div class="ref-section">
-            <span class="ref-label">Επόπτες Γραμμής:</span>
-            <span class="ref-value">${linesmen}</span>
-        </div>
-        <div class="ref-section">
-            <span class="ref-label">Γραμματεία:</span>
-            <span class="ref-value">${secretariat}</span>
-        </div>
+        <div class="ref-section"><span class="ref-label">Διαιτητές:</span><span class="ref-value">${referees}</span></div>
+        <div class="ref-section"><span class="ref-label">Παρατηρητής:</span><span class="ref-value">${observer}</span></div>
+        <div class="ref-section"><span class="ref-label">Challenge Referee:</span><span class="ref-value">${challengeRef}</span></div>
+        <div class="ref-section"><span class="ref-label">Επόπτες Γραμμής:</span><span class="ref-value">${linesmen}</span></div>
+        <div class="ref-section"><span class="ref-label">Γραμματεία:</span><span class="ref-value">${secretariat}</span></div>
     `;
     return div;
 }
 
 async function init() {
     const container = document.getElementById('cardsContainer');
-    
-    if(!teamParam){
-        container.innerHTML='<div class="no-data">⚠️ Δεν δόθηκε ομάδα στο URL.<br><small>Χρησιμοποιήστε: /show/paok ή /show/olympiakos</small></div>';
+    if (!teamParam) {
+        container.innerHTML = '<div class="no-data">⚠️ Δεν δόθηκε ομάδα στο URL.<br><small>Χρησιμοποιήστε: /show/paok ή /show/olympiakos</small></div>';
         return;
     }
-    
-    try{
+    try {
         const data = await fetchGameday();
-        console.log('Fetched data:', data);
-        
         const games = data.games || [];
-        console.log('All games:', games);
-        
-        // Filter for selected team using slug
         const filtered = games.filter(g => {
             const homeMatch = g.homeSlug && g.homeSlug.toLowerCase() === teamParam;
             const awayMatch = g.awaySlug && g.awaySlug.toLowerCase() === teamParam;
-            console.log(`Checking game: ${g.homeSlug} vs ${g.awaySlug}, matches: home=${homeMatch}, away=${awayMatch}`);
             return homeMatch || awayMatch;
         });
-        
-        console.log('Filtered games:', filtered);
-        
-        if(filtered.length === 0){
-            container.innerHTML=`
-                <div class="no-data">
-                    ⚠️ Δεν βρέθηκε κανένα παιχνίδι για την ομάδα: <strong>${teamParam}</strong>
-                    <br><br>
-                    <small>Διαθέσιμες ομάδες: ${games.map(g => g.homeSlug + ', ' + g.awaySlug).join(' | ')}</small>
-                </div>
-            `;
+
+        if (filtered.length === 0) {
+            container.innerHTML = `<div class="no-data">⚠️ Δεν βρέθηκε κανένα παιχνίδι για την ομάδα: <strong>${teamParam}</strong></div>`;
             return;
         }
-        
+
         container.innerHTML = '';
         filtered.forEach(game => container.appendChild(renderGame(game)));
-        
-    } catch(e){
-        console.error('Error:', e);
-        container.innerHTML=`<div class="no-data">❌ Σφάλμα: ${e.message}</div>`;
+    } catch(e) {
+        container.innerHTML = `<div class="no-data">❌ Σφάλμα: ${e.message}</div>`;
     }
 }
 
@@ -192,13 +136,3 @@ init();
 </script>
 </body>
 </html>
-```
-
-## 3. GitHub Repository Structure:
-
-Your `referees` repository should have:
-```
-referees/
-├── index.html          (referee panel - for creating games)
-├── show.html          (or show/index.html - for displaying)
-└── gameday.json       (auto-created by the panel)
