@@ -3,69 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏐 Referees Overlay</title>
+<title>🏐 Referees Overlay - Volley Graphics Style</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-body {
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
-    background: transparent; /* overlay */
-    color: #f8fafc;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end; /* bottom-anchored container */
-    overflow: hidden;
-}
-.container {
-    width: 90%;
-    max-width: 900px;
-    margin-bottom: 30px;
-    background: rgba(15,23,42,0.7);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 20px 30px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-}
-h1 {
-    text-align: center;
-    color: #60a5fa;
-    font-size: 1.8rem;
-    margin-bottom: 20px;
-}
-.card {
-    background: rgba(255,255,255,0.05);
-    backdrop-filter: blur(5px);
-    border-radius: 15px;
-    padding: 15px 20px;
-    margin-bottom: 15px;
-    border: 1px solid rgba(255,255,255,0.2);
-}
-.vs-header {
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    text-align: center;
-    color: #3b82f6;
-}
-.ref-section { margin-bottom: 8px; }
-.ref-label { color: #94a3b8; font-weight: 600; display: inline-block; min-width: 120px; }
-.ref-value { color: #f8fafc; font-weight: 500; }
-.no-data, .loading { text-align: center; padding: 20px; color: #94a3b8; }
-.spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #3b82f6; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    /* 1. Integrated Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700;800&family=Nunito+Sans:wght@300;400;600;700;800&display=swap');
+    
+    /* 2. CSS Variables for Team Colors (Default Blue Theme) */
+    :root {
+        /* Vibrant Blue from original overlay's h1 */
+        --primary-rgb: 59, 130, 246; 
+        /* White for contrast */
+        --secondary-rgb: 255, 255, 255;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Inter', 'Nunito Sans', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: transparent; /* overlay */
+        color: #f8fafc;
+        height: 100vh;
+        width: 100vw; /* Added for background lines */
+        display: flex;
+        justify-content: center;
+        align-items: flex-end; /* bottom-anchored container */
+        overflow: hidden;
+        position: relative; /* Context for moving lines */
+    }
+
+    /* 3. Moving Lines Animation - Copied from roster.html */
+    .moving-lines {
+        position: fixed; /* Fixed position relative to viewport */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        z-index: -1; /* Send to background */
+        pointer-events: none;
+        opacity: 0.4;
+    }
+    .line {
+        position: absolute;
+        height: 2px;
+        background: linear-gradient(90deg, 
+            transparent 0%, 
+            rgba(var(--primary-rgb), 0.6) 20%, 
+            rgba(var(--secondary-rgb), 0.8) 50%, 
+            rgba(var(--primary-rgb), 0.6) 80%, 
+            transparent 100%
+        );
+        border-radius: 1px;
+        box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.4);
+    }
+    .line-1 { width: 300px; top: 10%; animation: moveLine1 8s linear infinite; }
+    .line-2 { width: 250px; top: 35%; animation: moveLine2 6s linear infinite; }
+    .line-3 { width: 400px; top: 65%; animation: moveLine3 10s linear infinite; }
+    .line-4 { width: 200px; top: 90%; animation: moveLine4 7s linear infinite; }
+    
+    @keyframes moveLine1 { 0% { left: -300px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { left: 100vw; opacity: 0; } }
+    @keyframes moveLine2 { 0% { right: -250px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { right: 100vw; opacity: 0; } }
+    @keyframes moveLine3 { 0% { left: -400px; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { left: 100vw; opacity: 0; } }
+    @keyframes moveLine4 { 0% { right: -200px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { right: 100vw; opacity: 0; } }
+    /* End of Moving Lines */
+
+    /* 4. Container Styling - Applied roster graphic aesthetics */
+    .container {
+        width: 90%;
+        max-width: 900px;
+        margin-bottom: 50px; /* Increased bottom margin */
+        background: rgba(0, 0, 0, 0.7); /* Darker background */
+        backdrop-filter: blur(15px); /* Increased blur */
+        border-radius: 20px;
+        padding: 20px 30px;
+        border: 2px solid rgba(var(--primary-rgb), 0.3); /* Primary color border */
+        box-shadow: 
+            0 20px 60px rgba(0, 0, 0, 0.5),
+            0 0 40px rgba(var(--primary-rgb), 0.2); /* Primary color glow */
+        z-index: 10;
+        opacity: 0; /* Initial state for container fade-in */
+        transform: translateY(20px);
+        transition: all 0.8s ease-out;
+    }
+    .container-animate {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    h1 {
+        text-align: center;
+        /* Using primary color for header */
+        color: rgba(var(--primary-rgb), 1); 
+        font-family: 'Orbitron', monospace; /* Used Orbitron font */
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* 5. Card Animation - Based on roster table rows */
+    .card {
+        background: rgba(var(--secondary-rgb), 0.05); /* Lighter/White glass effect */
+        backdrop-filter: blur(5px);
+        border-radius: 15px;
+        padding: 15px 20px;
+        margin-bottom: 15px;
+        /* Primary color side line and white border */
+        border: 1px solid rgba(var(--secondary-rgb), 0.2); 
+        box-shadow: inset 0 0 10px rgba(var(--primary-rgb), 0.1);
+        
+        /* Animation initial state */
+        opacity: 0;
+        transform: translateX(-50px);
+        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth transition */
+    }
+    .card:hover {
+        background: rgba(var(--primary-rgb), 0.1);
+        box-shadow: inset 5px 0 0 rgba(var(--primary-rgb), 0.8), inset 0 0 10px rgba(var(--primary-rgb), 0.2);
+        transform: translateX(0); /* Stop transformation if hovering during slide-in */
+    }
+    .card.card-animate {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .vs-header {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        text-align: center;
+        color: rgba(var(--primary-rgb), 1); /* Primary color for VS */
+    }
+    .ref-section { margin-bottom: 8px; display: flex; align-items: baseline; }
+    .ref-label { 
+        color: rgba(var(--secondary-rgb), 0.7); /* Faded white/secondary color */
+        font-weight: 600; 
+        display: inline-block; 
+        min-width: 140px; 
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .ref-value { color: #fff; font-weight: 500; flex-grow: 1; }
+    .no-data, .loading { text-align: center; padding: 20px; color: #94a3b8; }
+    .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid rgba(var(--primary-rgb), 1); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 </style>
 </head>
 <body>
-<div class="container">
-<h1>🏐 Στοιχεία Διαιτησίας</h1>
-<div id="cardsContainer">
-    <div class="loading">
-        <div class="spinner"></div>
-        <p style="margin-top:10px;">Φόρτωση δεδομένων...</p>
+    <div class="moving-lines">
+        <div class="line line-1"></div>
+        <div class="line line-2"></div>
+        <div class="line line-3"></div>
+        <div class="line line-4"></div>
     </div>
-</div>
+    <div class="container" id="mainContainer">
+    <h1>🏐 Στοιχεία Διαιτησίας</h1>
+    <div id="cardsContainer">
+        <div class="loading">
+            <div class="spinner"></div>
+            <p style="margin-top:10px;">Φόρτωση δεδομένων...</p>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -98,7 +203,7 @@ function renderGame(game) {
         <div class="vs-header">${game.homeTeam} vs ${game.awayTeam}</div>
         <div class="ref-section"><span class="ref-label">Διαιτητές:</span><span class="ref-value">${referees}</span></div>
         <div class="ref-section"><span class="ref-label">Παρατηρητής:</span><span class="ref-value">${observer}</span></div>
-        <div class="ref-section"><span class="ref-label">Challenge Referee:</span><span class="ref-value">${challengeRef}</span></div>
+        <div class="ref-section"><span class="ref-label">Challenge Ref:</span><span class="ref-value">${challengeRef}</span></div>
         <div class="ref-section"><span class="ref-label">Επόπτες Γραμμής:</span><span class="ref-value">${linesmen}</span></div>
         <div class="ref-section"><span class="ref-label">Γραμματεία:</span><span class="ref-value">${secretariat}</span></div>
     `;
@@ -107,6 +212,11 @@ function renderGame(game) {
 
 async function init() {
     const container = document.getElementById('cardsContainer');
+    const mainContainer = document.getElementById('mainContainer');
+    
+    // Animate the main container entrance
+    mainContainer.classList.add('container-animate');
+    
     if (!teamParam) {
         container.innerHTML = '<div class="no-data">⚠️ Δεν δόθηκε ομάδα στο URL.<br>Χρησιμοποιήστε: show.html?team=paok</div>';
         return;
@@ -125,7 +235,17 @@ async function init() {
         }
 
         container.innerHTML = '';
-        filtered.forEach(game => container.appendChild(renderGame(game)));
+        // 5. Apply staggered animation to each card
+        filtered.forEach((game, index) => {
+            const card = renderGame(game);
+            container.appendChild(card);
+            
+            // Apply animation class with a sequential delay
+            setTimeout(() => {
+                card.classList.add('card-animate');
+            }, 100 + (index * 150)); /* 100ms start delay + 150ms between cards */
+        });
+
     } catch(e) {
         container.innerHTML = `<div class="no-data">❌ Σφάλμα: ${e.message}</div>`;
     }
