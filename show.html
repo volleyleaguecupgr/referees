@@ -3,16 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🏐 Referees Overlay - Volley Graphics Style</title>
+<title>🏐 Referees Overlay - Professional TV Graphics</title>
 <style>
-    /* 1. Integrated Fonts */
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700;800&family=Nunito+Sans:wght@300;400;600;700;800&display=swap');
     
-    /* 2. CSS Variables for Team Colors (Default Blue Theme) */
     :root {
-        /* Vibrant Blue from original overlay's h1 */
-        --primary-rgb: 59, 130, 246; 
-        /* White for contrast */
+        --primary-rgb: 59, 130, 246;
         --secondary-rgb: 255, 255, 255;
     }
 
@@ -24,234 +20,381 @@
 
     body {
         font-family: 'Inter', 'Nunito Sans', sans-serif;
+        background: transparent;
+        min-height: 100vh;
+        overflow: hidden;
         margin: 0;
         padding: 0;
-        background: transparent; /* overlay */
-        color: #f8fafc;
-        height: 100vh;
-        width: 100vw; /* Added for background lines */
-        display: flex;
-        justify-content: center;
-        align-items: flex-end; /* bottom-anchored container */
-        overflow: hidden;
-        position: relative; /* Context for moving lines */
     }
 
-    /* 3. Moving Lines Animation - Copied from roster.html */
+    /* Graphics Container - Bottom Aligned */
+    .graphics-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 1920px;
+        height: 600px;
+        transform-origin: bottom left;
+        transform: scale(calc(min(100vw / 1920px, (100vh * 0.6) / 600px)));
+        background: transparent;
+    }
+
+    /* Moving Lines Animation */
     .moving-lines {
-        position: fixed; /* Fixed position relative to viewport */
+        position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        width: 1920px;
+        height: 600px;
         overflow: hidden;
-        z-index: -1; /* Send to background */
+        z-index: 1;
         pointer-events: none;
-        opacity: 0.4;
     }
+
     .line {
         position: absolute;
-        height: 2px;
+        height: 3px;
         background: linear-gradient(90deg, 
             transparent 0%, 
-            rgba(var(--primary-rgb), 0.6) 20%, 
-            rgba(var(--secondary-rgb), 0.8) 50%, 
-            rgba(var(--primary-rgb), 0.6) 80%, 
+            rgba(var(--primary-rgb), 0.4) 20%, 
+            rgba(var(--secondary-rgb), 0.6) 50%, 
+            rgba(var(--primary-rgb), 0.4) 80%, 
             transparent 100%
         );
-        border-radius: 1px;
-        box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.4);
-    }
-    .line-1 { width: 300px; top: 10%; animation: moveLine1 8s linear infinite; }
-    .line-2 { width: 250px; top: 35%; animation: moveLine2 6s linear infinite; }
-    .line-3 { width: 400px; top: 65%; animation: moveLine3 10s linear infinite; }
-    .line-4 { width: 200px; top: 90%; animation: moveLine4 7s linear infinite; }
-    
-    @keyframes moveLine1 { 0% { left: -300px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { left: 100vw; opacity: 0; } }
-    @keyframes moveLine2 { 0% { right: -250px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { right: 100vw; opacity: 0; } }
-    @keyframes moveLine3 { 0% { left: -400px; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { left: 100vw; opacity: 0; } }
-    @keyframes moveLine4 { 0% { right: -200px; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { right: 100vw; opacity: 0; } }
-    /* End of Moving Lines */
-
-    /* 4. Container Styling - Applied roster graphic aesthetics */
-    .container {
-        width: 90%;
-        max-width: 900px;
-        margin-bottom: 50px; /* Increased bottom margin */
-        background: rgba(0, 0, 0, 0.7); /* Darker background */
-        backdrop-filter: blur(15px); /* Increased blur */
-        border-radius: 20px;
-        padding: 20px 30px;
-        border: 2px solid rgba(var(--primary-rgb), 0.3); /* Primary color border */
-        box-shadow: 
-            0 20px 60px rgba(0, 0, 0, 0.5),
-            0 0 40px rgba(var(--primary-rgb), 0.2); /* Primary color glow */
-        z-index: 10;
-        opacity: 0; /* Initial state for container fade-in */
-        transform: translateY(20px);
-        transition: all 0.8s ease-out;
-    }
-    .container-animate {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    
-    h1 {
-        text-align: center;
-        /* Using primary color for header */
-        color: rgba(var(--primary-rgb), 1); 
-        font-family: 'Orbitron', monospace; /* Used Orbitron font */
-        font-size: 1.8rem;
-        margin-bottom: 20px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        border-radius: 2px;
+        box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.3);
     }
 
-    /* 5. Card Animation - Based on roster table rows */
-    .card {
-        background: rgba(var(--secondary-rgb), 0.05); /* Lighter/White glass effect */
-        backdrop-filter: blur(5px);
-        border-radius: 15px;
-        padding: 15px 20px;
-        margin-bottom: 15px;
-        /* Primary color side line and white border */
-        border: 1px solid rgba(var(--secondary-rgb), 0.2); 
-        box-shadow: inset 0 0 10px rgba(var(--primary-rgb), 0.1);
-        
-        /* Animation initial state */
+    .line-1 { width: 400px; top: 15%; animation: moveLine1 12s linear infinite; }
+    .line-2 { width: 350px; top: 35%; animation: moveLine2 10s linear infinite; }
+    .line-3 { width: 500px; top: 55%; animation: moveLine3 14s linear infinite; }
+    .line-4 { width: 300px; top: 75%; animation: moveLine4 11s linear infinite; }
+    .line-5 { width: 450px; top: 25%; animation: moveLine5 9s linear infinite; }
+
+    @keyframes moveLine1 { 0% { left: -400px; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { left: 1920px; opacity: 0; } }
+    @keyframes moveLine2 { 0% { right: -350px; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { right: 1920px; opacity: 0; } }
+    @keyframes moveLine3 { 0% { left: -500px; opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { left: 1920px; opacity: 0; } }
+    @keyframes moveLine4 { 0% { right: -300px; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { right: 1920px; opacity: 0; } }
+    @keyframes moveLine5 { 0% { right: -450px; opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { right: 1920px; opacity: 0; } }
+
+    /* Title */
+    .title {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 42px;
+        font-weight: 900;
+        background: linear-gradient(135deg, #f8fafc 0%, #3b82f6 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
+        z-index: 15;
         opacity: 0;
-        transform: translateX(-50px);
-        transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth transition */
+        transform: translateX(-50%) translateY(-30px);
+        animation: titleSlideIn 1.5s ease-out 0.3s forwards;
+        letter-spacing: 2px;
+        text-transform: uppercase;
     }
-    .card:hover {
-        background: rgba(var(--primary-rgb), 0.1);
-        box-shadow: inset 5px 0 0 rgba(var(--primary-rgb), 0.8), inset 0 0 10px rgba(var(--primary-rgb), 0.2);
-        transform: translateX(0); /* Stop transformation if hovering during slide-in */
+
+    @keyframes titleSlideIn {
+        to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
     }
-    .card.card-animate {
-        opacity: 1;
-        transform: translateX(0);
+
+    /* Match VS Header */
+    .match-header {
+        position: absolute;
+        top: 80px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        z-index: 15;
+        opacity: 0;
+        animation: fadeInScale 1s ease-out 0.8s forwards;
     }
 
     .vs-header {
-        font-size: 1.6rem;
-        font-weight: 700;
+        font-size: 32px;
+        font-weight: 800;
+        color: rgba(var(--primary-rgb), 1);
+        text-shadow: 0 0 20px rgba(var(--primary-rgb), 0.6);
+        font-family: 'Orbitron', monospace;
+    }
+
+    @keyframes fadeInScale {
+        0% {
+            opacity: 0;
+            transform: translateX(-50%) scale(0.8);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+    }
+
+    /* Referees Container */
+    .referees-container {
+        position: absolute;
+        top: 140px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 1700px;
+        z-index: 10;
+    }
+
+    .ref-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    /* Referee Card */
+    .ref-card {
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(20px);
+        border-radius: 15px;
+        padding: 15px 20px;
+        border: 2px solid rgba(var(--primary-rgb), 0.4);
+        box-shadow: 
+            0 15px 40px rgba(0, 0, 0, 0.6),
+            0 0 30px rgba(var(--primary-rgb), 0.3);
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+        animation: cardSlideUp 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .ref-card:nth-child(1) { animation-delay: 1.2s; }
+    .ref-card:nth-child(2) { animation-delay: 1.4s; }
+    .ref-card:nth-child(3) { animation-delay: 1.6s; }
+    .ref-card:nth-child(4) { animation-delay: 1.8s; }
+    .ref-card:nth-child(5) { animation-delay: 2.0s; }
+
+    @keyframes cardSlideUp {
+        0% {
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+            box-shadow: 0 0 0 rgba(var(--primary-rgb), 0);
+        }
+        60% {
+            box-shadow: 0 0 40px rgba(var(--primary-rgb), 0.8);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                0 0 40px rgba(var(--primary-rgb), 0.3);
+        }
+    }
+
+    .ref-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
         margin-bottom: 10px;
-        text-align: center;
-        color: rgba(var(--primary-rgb), 1); /* Primary color for VS */
+        padding-bottom: 10px;
+        border-bottom: 2px solid rgba(var(--primary-rgb), 0.3);
     }
-    .ref-section { margin-bottom: 8px; display: flex; align-items: baseline; }
-    .ref-label { 
-        color: rgba(var(--secondary-rgb), 0.7); /* Faded white/secondary color */
-        font-weight: 600; 
-        display: inline-block; 
-        min-width: 140px; 
-        font-size: 0.95rem;
+
+    .ref-icon {
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.3), rgba(var(--secondary-rgb), 0.1));
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        border: 2px solid rgba(var(--primary-rgb), 0.5);
+    }
+
+    .ref-label {
+        font-size: 16px;
+        font-weight: 800;
+        color: rgba(var(--primary-rgb), 1);
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
+        font-family: 'Orbitron', monospace;
     }
-    .ref-value { color: #fff; font-weight: 500; flex-grow: 1; }
-    .no-data, .loading { text-align: center; padding: 20px; color: #94a3b8; }
-    .spinner { border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid rgba(var(--primary-rgb), 1); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 0 auto; }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    .ref-names {
+        color: #f8fafc;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.4;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Full Width Card for Secretariat */
+    .ref-card.full-width {
+        grid-column: 1 / -1;
+    }
+
+    /* Loading/Error States */
+    .loading, .no-data {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: #f8fafc;
+        z-index: 20;
+    }
+
+    .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.2);
+        border-top: 4px solid rgba(var(--primary-rgb), 1);
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .no-data {
+        font-size: 24px;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 40px;
+        border-radius: 20px;
+        border: 2px solid rgba(var(--primary-rgb), 0.5);
+    }
 </style>
 </head>
 <body>
-    <div class="moving-lines">
-        <div class="line line-1"></div>
-        <div class="line line-2"></div>
-        <div class="line line-3"></div>
-        <div class="line line-4"></div>
-    </div>
-    <div class="container" id="mainContainer">
-    <h1>🏐 Στοιχεία Διαιτησίας</h1>
-    <div id="cardsContainer">
-        <div class="loading">
-            <div class="spinner"></div>
-            <p style="margin-top:10px;">Φόρτωση δεδομένων...</p>
+    <div class="graphics-container">
+        <!-- Moving Lines -->
+        <div class="moving-lines">
+            <div class="line line-1"></div>
+            <div class="line line-2"></div>
+            <div class="line line-3"></div>
+            <div class="line line-4"></div>
+            <div class="line line-5"></div>
         </div>
+
+        <!-- Title -->
+        <div class="title">ΣΤΟΙΧΕΙΑ ΔΙΑΙΤΗΣΙΑΣ</div>
+
+        <!-- Loading State -->
+        <div class="loading" id="loadingScreen">
+            <div class="spinner"></div>
+            <div class="loading-text">Φόρτωση δεδομένων...</div>
+        </div>
+
+        <!-- Match Header (will be populated) -->
+        <div class="match-header" id="matchHeader" style="display: none;"></div>
+
+        <!-- Referees Container -->
+        <div class="referees-container" id="refereesContainer" style="display: none;"></div>
     </div>
-</div>
 
-<script>
-// GitHub info
-const githubOwner = "volleyleaguecupgr";
-const githubRepo = "referees";
-const branch = "main";
-
-// ✅ Use query parameter instead of path
-const urlParams = new URLSearchParams(window.location.search);
-const teamParam = urlParams.get('team')?.toLowerCase();
-
-async function fetchGameday() {
-    const url = `https://raw.githubusercontent.com/${githubOwner}/${githubRepo}/${branch}/gameday.json`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("Could not fetch gameday.json");
-    return await res.json();
-}
-
-function renderGame(game) {
-    const div = document.createElement('div');
-    div.className = 'card';
-    const referees = (game.refs.referees || []).join(', ') || 'Δεν έχει οριστεί';
-    const observer = game.refs.observer || 'Δεν έχει οριστεί';
-    const challengeRef = game.refs.challengeRef || 'Δεν έχει οριστεί';
-    const linesmen = (game.refs.linesmen || []).join(', ') || 'Δεν έχει οριστεί';
-    const secretariat = game.refs.secretariat || 'Δεν έχει οριστεί';
-
-    div.innerHTML = `
-        <div class="vs-header">${game.homeTeam} vs ${game.awayTeam}</div>
-        <div class="ref-section"><span class="ref-label">Διαιτητές:</span><span class="ref-value">${referees}</span></div>
-        <div class="ref-section"><span class="ref-label">Παρατηρητής:</span><span class="ref-value">${observer}</span></div>
-        <div class="ref-section"><span class="ref-label">Challenge Ref:</span><span class="ref-value">${challengeRef}</span></div>
-        <div class="ref-section"><span class="ref-label">Επόπτες Γραμμής:</span><span class="ref-value">${linesmen}</span></div>
-        <div class="ref-section"><span class="ref-label">Γραμματεία:</span><span class="ref-value">${secretariat}</span></div>
-    `;
-    return div;
-}
-
-async function init() {
-    const container = document.getElementById('cardsContainer');
-    const mainContainer = document.getElementById('mainContainer');
-    
-    // Animate the main container entrance
-    mainContainer.classList.add('container-animate');
-    
-    if (!teamParam) {
-        container.innerHTML = '<div class="no-data">⚠️ Δεν δόθηκε ομάδα στο URL.<br>Χρησιμοποιήστε: show.html?team=paok</div>';
-        return;
-    }
-    try {
-        const data = await fetchGameday();
-        const games = data.games || [];
-        const filtered = games.filter(g => 
-            (g.homeSlug || '').toLowerCase() === teamParam || 
-            (g.awaySlug || '').toLowerCase() === teamParam
-        );
-
-        if (filtered.length === 0) {
-            container.innerHTML = `<div class="no-data">⚠️ Δεν βρέθηκε κανένα παιχνίδι για την ομάδα: <strong>${teamParam}</strong></div>`;
-            return;
+    <script>
+        // URL redirect logic - handle /referees/paok -> /referees/?team=paok
+        const path = window.location.pathname;
+        const segments = path.replace(/^\/+/, '').split('/').filter(s => s);
+        
+        // Check if we have a path like /referees/paok (without query param)
+        if (segments.length >= 2 && segments[0] === 'referees' && !window.location.search) {
+            const teamSlug = segments[1].replace(/\.html$/, '');
+            window.location.href = `${window.location.origin}/referees/?team=${teamSlug}`;
         }
 
-        container.innerHTML = '';
-        // 5. Apply staggered animation to each card
-        filtered.forEach((game, index) => {
-            const card = renderGame(game);
-            container.appendChild(card);
-            
-            // Apply animation class with a sequential delay
-            setTimeout(() => {
-                card.classList.add('card-animate');
-            }, 100 + (index * 150)); /* 100ms start delay + 150ms between cards */
-        });
+        const githubOwner = "volleyleaguecupgr";
+        const githubRepo = "referees";
+        const branch = "main";
 
-    } catch(e) {
-        container.innerHTML = `<div class="no-data">❌ Σφάλμα: ${e.message}</div>`;
-    }
-}
+        const urlParams = new URLSearchParams(window.location.search);
+        const teamParam = urlParams.get('team')?.toLowerCase();
 
-init();
-</script>
+        async function fetchGameday() {
+            const url = `https://raw.githubusercontent.com/${githubOwner}/${githubRepo}/${branch}/gameday.json`;
+            const res = await fetch(url);
+            if (!res.ok) throw new Error("Could not fetch gameday.json");
+            return await res.json();
+        }
+
+        function createRefCard(icon, label, names) {
+            return `
+                <div class="ref-card">
+                    <div class="ref-card-header">
+                        <div class="ref-icon">${icon}</div>
+                        <div class="ref-label">${label}</div>
+                    </div>
+                    <div class="ref-names">${names}</div>
+                </div>
+            `;
+        }
+
+        function renderGame(game) {
+            const referees = (game.refs.referees || []).join('<br>') || 'Δεν έχει οριστεί';
+            const observer = game.refs.observer || 'Δεν έχει οριστεί';
+            const challengeRef = game.refs.challengeRef || 'Δεν έχει οριστεί';
+            const linesmen = (game.refs.linesmen || []).join('<br>') || 'Δεν έχει οριστεί';
+            const secretariat = game.refs.secretariat || 'Δεν έχει οριστεί';
+
+            // Set match header
+            const matchHeader = document.getElementById('matchHeader');
+            matchHeader.innerHTML = `<div class="vs-header">${game.homeTeam} vs ${game.awayTeam}</div>`;
+            matchHeader.style.display = 'block';
+
+            // Build referee cards in 3-column grid
+            const container = document.getElementById('refereesContainer');
+            container.innerHTML = `
+                <div class="ref-grid">
+                    ${createRefCard('🏐', 'Διαιτητές', referees)}
+                    ${createRefCard('👁️', 'Παρατηρητής', observer)}
+                    ${createRefCard('📹', 'Challenge Ref', challengeRef)}
+                    ${createRefCard('🚩', 'Επόπτες Γραμμής', linesmen)}
+                    ${createRefCard('📋', 'Γραμματεία', secretariat)}
+                </div>
+            `;
+            container.style.display = 'block';
+        }
+
+        async function init() {
+            const loadingScreen = document.getElementById('loadingScreen');
+
+            if (!teamParam) {
+                loadingScreen.innerHTML = '<div class="no-data">⚠️ Δεν δόθηκε ομάδα στο URL.<br>Χρησιμοποιήστε: /referees/?team=paok</div>';
+                return;
+            }
+
+            try {
+                const data = await fetchGameday();
+                const games = data.games || [];
+                const filtered = games.filter(g => 
+                    (g.homeSlug || '').toLowerCase() === teamParam || 
+                    (g.awaySlug || '').toLowerCase() === teamParam
+                );
+
+                if (filtered.length === 0) {
+                    loadingScreen.innerHTML = `<div class="no-data">⚠️ Δεν βρέθηκε κανένα παιχνίδι για την ομάδα: <strong>${teamParam}</strong></div>`;
+                    return;
+                }
+
+                // Hide loading, show content
+                loadingScreen.style.display = 'none';
+                renderGame(filtered[0]);
+
+            } catch(e) {
+                loadingScreen.innerHTML = `<div class="no-data">❌ Σφάλμα: ${e.message}</div>`;
+            }
+        }
+
+        init();
+    </script>
 </body>
 </html>
