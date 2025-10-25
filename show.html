@@ -307,14 +307,14 @@
         const hash = window.location.hash;
         
         // Check if URL ends with /show/something (team name)
-        const showMatch = path.match(/\/show\/([^\/]+)$/);
+        /*const showMatch = path.match(/\/show\/([^\/]+)$/);
         
         if (showMatch && !window.location.search) {
             const teamSlug = showMatch[1].replace(/\.html$/, '');
             // Redirect to /show?team=teamname
             const basePath = path.replace(/\/[^\/]+$/, ''); // Remove team name
             window.location.href = `${basePath}?team=${teamSlug}`;
-        }
+        }*/
 
         const githubOwner = "volleyleaguecupgr";
         const githubRepo = "referees";
