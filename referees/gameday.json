@@ -1,0 +1,99 @@
+{
+  "games": [
+    {
+      "homeTeam": "ΚΗΦΙΣΙΑ",
+      "homeSlug": "kifisia",
+      "awayTeam": "ΠΑΟΚ",
+      "awaySlug": "paok",
+      "refs": {
+        "referees": [
+          "Φραγκάκης",
+          "Πρέντζας"
+        ],
+        "observer": "Μαυρικίδης",
+        "challengeRef": "Γεροθόδωρος",
+        "linesmen": [
+          "Ζαρμπίνης",
+          "Γεωργοπούλου"
+        ],
+        "secretariat": "Τάλαρου"
+      }
+    },
+    {
+      "homeTeam": "ΜΙΛΩΝ",
+      "homeSlug": "milon",
+      "awayTeam": "ΟΦΗ",
+      "awaySlug": "ofi",
+      "refs": {
+        "referees": [
+          "Βασιλειάδης",
+          "Νικάκης"
+        ],
+        "observer": "Ράπτης",
+        "challengeRef": "",
+        "linesmen": [
+          "Μουζακίτη",
+          "Σαμοθράκης"
+        ],
+        "secretariat": "Μπίτσικα"
+      }
+    },
+    {
+      "homeTeam": "ΦΟΙΝΙΚΑΣ ΣΥΡΟΥ",
+      "homeSlug": "foinikas",
+      "awayTeam": "ΠΑΝΙΩΝΙΟΣ",
+      "awaySlug": "panionios",
+      "refs": {
+        "referees": [
+          "Βουδούρης",
+          "Γεωργιάδης"
+        ],
+        "observer": "Γεωργόπουλος",
+        "challengeRef": "",
+        "linesmen": [
+          "Συρίγος",
+          "Βρούτσης"
+        ],
+        "secretariat": "Καπουράνη"
+      }
+    },
+    {
+      "homeTeam": "ΚΑΛΑΜΑΤΑ",
+      "homeSlug": "kalamata",
+      "awayTeam": "ΦΛΟΙΣΒΟΣ",
+      "awaySlug": "floisvos",
+      "refs": {
+        "referees": [
+          "Γεροθόδωρος",
+          "Καραγιαννόπουλος"
+        ],
+        "observer": "Πέρρος",
+        "challengeRef": "",
+        "linesmen": [
+          "Τομαράς",
+          "Κοσμάς"
+        ],
+        "secretariat": "Καρατζογλίδου"
+      }
+    },
+    {
+      "homeTeam": "ΟΛΥΜΠΙΑΚΟΣ",
+      "homeSlug": "olympiakos",
+      "awayTeam": "ΠΑΝΑΘΗΝΑΪΚΟΣ",
+      "awaySlug": "panathinaikos",
+      "refs": {
+        "referees": [
+          "Μυλωνάκης",
+          "Κυριοπούλου"
+        ],
+        "observer": "Καλπακτσόγλου",
+        "challengeRef": "Κουτσούλας",
+        "linesmen": [
+          "Καπότης",
+          "Τσεκούρας"
+        ],
+        "secretariat": "Θεοδωρίδου"
+      }
+    }
+  ]
+}
